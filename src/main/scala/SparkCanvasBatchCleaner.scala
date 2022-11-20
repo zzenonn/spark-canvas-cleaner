@@ -29,6 +29,8 @@ object SparkCanvasBatchCleaner {
     Logger.getLogger("org").setLevel(Level.ERROR)
 
     val inputPath = args(0)
+    val outputPath = args(1)
+
         
     // Create a SparkContext using every core of the local machine
     val spark = SparkSession
@@ -182,7 +184,9 @@ object SparkCanvasBatchCleaner {
 
     canvasdata.show()
 
-    
+    val sqlStatement := "CREATE TABLE IF NOT EXISTS canvas_parquet STORED AS PARQUET partitioned by (year, month, day) LOCATION " + outputPath + " AS SELECT * FROM canvasdata"
+
+    spark.sql(sqlStatement)
 
     // results.foreach(println)
     spark.stop()
