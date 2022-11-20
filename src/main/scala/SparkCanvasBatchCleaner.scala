@@ -163,14 +163,16 @@ object SparkCanvasBatchCleaner {
         .schema(schema)
         .load(SparkFiles.get("09-19-03.jsonl"))
 
-    val df = canvasData.withColumn("metadata_event_time", unix_timestamp(col("metadata_event_time"), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").cast(TimestampType))
+    val canvasDataExpandedDate = canvasData.withColumn("year", year(col("metadata_event_time")))
+                       .withColumn("month", month(col("metadata_event_time")))
+                       .withColumn("dayofmonth", day(col("metadata_event_time")))
     
-    canvasData.createOrReplaceTempView("canvasdata")
+    canvasDataExpandedDate.createOrReplaceTempView("canvasdata")
 
     // SQL can be run over DataFrames that have been registered as a table.
-    val canvasdata = spark.sql("SELECT metadata_event_time FROM canvasdata LIMIT 5")
+    val canvasdata = spark.sql("SELECT * FROM canvasdata LIMIT 5")
 
-    df.printSchema()
+    canvasDataExpandedDate.printSchema()
 
     canvasdata.show()
 
