@@ -38,7 +38,6 @@ object SparkCanvasBatchCleaner {
         .appName("SparkCanvasBatchCleaner")
         .config("hive.exec.dynamic.partition","true")
         .config("hive.exec.dynamic.partition.mode", "nonstrict")
-        .master("local[*]")
         .getOrCreate()
 
     val schema = StructType(Array(
