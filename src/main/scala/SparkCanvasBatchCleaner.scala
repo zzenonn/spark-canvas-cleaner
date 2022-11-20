@@ -169,7 +169,7 @@ object SparkCanvasBatchCleaner {
 
     val canvasDataExpandedDate = canvasData.withColumn("year", year(col("metadata_event_time")))
                        .withColumn("month", month(col("metadata_event_time")))
-                       .withColumn("dayofmonth", day(col("metadata_event_time")))
+                       .withColumn("day", dayofmonth(col("metadata_event_time")))
     
     canvasDataExpandedDate.createOrReplaceTempView("canvasdata")
 
