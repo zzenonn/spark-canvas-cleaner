@@ -36,6 +36,8 @@ object SparkCanvasBatchCleaner {
     val spark = SparkSession
         .builder
         .appName("SparkCanvasBatchCleaner")
+        .config("hive.exec.dynamic.partition","true")
+        .config("hive.exec.dynamic.partition.mode", "nonstrict")
         .master("local[*]")
         .getOrCreate()
 
