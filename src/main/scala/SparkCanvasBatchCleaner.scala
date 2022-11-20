@@ -176,7 +176,10 @@ object SparkCanvasBatchCleaner {
     val canvasDataExpandedDate = canvasData.withColumn("year", year(col("metadata_event_time")))
                        .withColumn("month", month(col("metadata_event_time")))
                        .withColumn("day", dayofmonth(col("metadata_event_time")))
-    
+
+
+    canvasDataExpandedDate.coalesce(9000)
+
     canvasDataExpandedDate.createOrReplaceTempView("canvasdata")
 
     // SQL can be run over DataFrames that have been registered as a table.
@@ -186,9 +189,16 @@ object SparkCanvasBatchCleaner {
 
     canvasdata.show()
 
-    val sqlStatement: String = "CREATE TABLE IF NOT EXISTS canvas_parquet STORED AS PARQUET TBLPROPERTIES ('parquet.compression'='SNAPPY'); partitioned by (year, month, day) LOCATION '" + outputPath + "' AS SELECT * FROM canvasdata"
+    canvasDataExpandedDate.write
+                          .mode("overwrite")
+                          .partitionBy("year","month","day")
+                          .format("parquet")
+                          .option("compression", "snappy")
+                          .save(outputPath)
 
-    spark.sql(sqlStatement)
+    // val sqlStatement: String = "CREATE TABLE IF NOT EXISTS canvas_parquet STORED AS PARQUET TBLPROPERTIES ('parquet.compression'='SNAPPY'); partitioned by (year, month, day) LOCATION '" + outputPath + "' AS SELECT * FROM canvasdata"
+
+    // spark.sql(sqlStatement)
 
     spark.stop()
   }
