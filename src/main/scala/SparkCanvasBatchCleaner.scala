@@ -169,6 +169,7 @@ object SparkCanvasBatchCleaner {
     // Load each line of the source data into an RDD
     val canvasData = spark.read
         .format("json")
+        .option("recursiveFileLookup","true")
         .schema(schema)
         .load(inputPath)
 
@@ -185,7 +186,7 @@ object SparkCanvasBatchCleaner {
 
     canvasdata.show()
 
-    val sqlStatement: String = "CREATE TABLE IF NOT EXISTS canvas_parquet STORED AS PARQUET partitioned by (year, month, day) LOCATION '" + outputPath + "' AS SELECT * FROM canvasdata"
+    val sqlStatement: String = "CREATE TABLE IF NOT EXISTS canvas_parquet STORED AS PARQUET TBLPROPERTIES ('parquet.compression'='SNAPPY'); partitioned by (year, month, day) LOCATION '" + outputPath + "' AS SELECT * FROM canvasdata"
 
     spark.sql(sqlStatement)
 
