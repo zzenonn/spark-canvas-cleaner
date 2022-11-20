@@ -11,6 +11,10 @@ import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions.desc
 import org.apache.spark.sql.functions.unix_timestamp
 import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.functions.year
+import org.apache.spark.sql.functions.month
+import org.apache.spark.sql.functions.dayofmonth
+
 
 
 /** Run sample SQL operations on a dataset. */
