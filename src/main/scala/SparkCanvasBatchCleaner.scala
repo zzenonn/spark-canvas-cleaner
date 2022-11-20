@@ -184,7 +184,7 @@ object SparkCanvasBatchCleaner {
 
     canvasdata.show()
 
-    val sqlStatement := "CREATE TABLE IF NOT EXISTS canvas_parquet STORED AS PARQUET partitioned by (year, month, day) LOCATION " + outputPath + " AS SELECT * FROM canvasdata"
+    val sqlStatement: String = "CREATE TABLE IF NOT EXISTS canvas_parquet STORED AS PARQUET partitioned by (year, month, day) LOCATION " + outputPath + " AS SELECT * FROM canvasdata"
 
     val results = spark.sql(sqlStatement)
 
