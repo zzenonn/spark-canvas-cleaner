@@ -10,6 +10,7 @@ import org.apache.spark.SparkFiles._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions.desc
 import org.apache.spark.sql.functions.unix_timestamp
+import org.apache.spark.sql.functions.col
 
 
 /** Run sample SQL operations on a dataset. */
@@ -36,7 +37,7 @@ object SparkCanvasBatchCleaner {
         .option("inferSchema" , "true")
         .load(SparkFiles.get("09-19-03.jsonl"))
 
-    canvasData.withColumn("metadata_event_time", unix_timestamp($"metadata_event_time", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").cast(TimestampType))
+    canvasData.withColumn("metadata_event_time", unix_timestamp(col("metadata_event_time"), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").cast(TimestampType))
     
     canvasData.createOrReplaceTempView("canvasdata")
 
