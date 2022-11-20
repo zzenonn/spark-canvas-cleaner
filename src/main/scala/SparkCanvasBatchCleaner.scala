@@ -27,6 +27,8 @@ object SparkCanvasBatchCleaner {
    
     // Set the log level to only print errors
     Logger.getLogger("org").setLevel(Level.ERROR)
+
+    val inputPath = args(0)
         
     // Create a SparkContext using every core of the local machine
     val spark = SparkSession
@@ -165,7 +167,7 @@ object SparkCanvasBatchCleaner {
     val canvasData = spark.read
         .format("json")
         .schema(schema)
-        .load(SparkFiles.get("09-19-03.jsonl"))
+        .load(inputPath)
 
     val canvasDataExpandedDate = canvasData.withColumn("year", year(col("metadata_event_time")))
                        .withColumn("month", month(col("metadata_event_time")))
