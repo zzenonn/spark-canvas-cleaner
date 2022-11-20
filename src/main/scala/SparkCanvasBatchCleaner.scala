@@ -33,7 +33,7 @@ object SparkCanvasBatchCleaner {
         .option("inferSchema" , "true")
         .load(SparkFiles.get("09-19-03.jsonl"))
     
-    wineReviews.createOrReplaceTempView("canvasdata")
+    canvasData.createOrReplaceTempView("canvasdata")
 
     // SQL can be run over DataFrames that have been registered as a table.
     val canvasdata = spark.sql("SELECT * FROM canvasdata LIMIT 5")
