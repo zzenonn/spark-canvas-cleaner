@@ -37,14 +37,14 @@ object SparkCanvasBatchCleaner {
         .option("inferSchema" , "true")
         .load(SparkFiles.get("09-19-03.jsonl"))
 
-    canvasData.withColumn("metadata_event_time", unix_timestamp(col("metadata_event_time"), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").cast(TimestampType))
+    val df = canvasData.withColumn("metadata_event_time", unix_timestamp(col("metadata_event_time"), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").cast(TimestampType))
     
     canvasData.createOrReplaceTempView("canvasdata")
 
     // SQL can be run over DataFrames that have been registered as a table.
     val canvasdata = spark.sql("SELECT metadata_event_time FROM canvasdata LIMIT 5")
 
-    canvasData.printSchema()
+    df.printSchema()
 
     canvasdata.show()
 
