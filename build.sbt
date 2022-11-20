@@ -1,4 +1,4 @@
-name := "SparkSqlWine"
+name := "SparkCanvasBulkCleaner"
 
 version := "2.0"
 
