@@ -30,8 +30,7 @@ object SparkCanvasBatchCleaner {
     // Load each line of the source data into an RDD
     val canvasData = spark.read
         .format("json")
-        .options("inferSchema" , "true")
-        .schema(schema)
+        .option("inferSchema" , "true")
         .load(SparkFiles.get("09-19-03.jsonl"))
     
     wineReviews.createOrReplaceTempView("canvasdata")
