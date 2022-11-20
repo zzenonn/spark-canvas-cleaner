@@ -1,5 +1,7 @@
 package edu.ateneo.nrg.spark
 
+import java.sql.Timestamp
+
 import org.apache.spark._
 import org.apache.spark.SparkContext._
 import org.apache.spark.sql._
@@ -32,13 +34,19 @@ object SparkCanvasBatchCleaner {
         .format("json")
         .option("inferSchema" , "true")
         .load(SparkFiles.get("09-19-03.jsonl"))
+
+    canvasData.withColumn("metadata_event_time", unix_timestamp($"metadata_event_time", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").cast(TimestampType))
     
     canvasData.createOrReplaceTempView("canvasdata")
 
     // SQL can be run over DataFrames that have been registered as a table.
-    val canvasdata = spark.sql("SELECT * FROM canvasdata LIMIT 5")
+    val canvasdata = spark.sql("SELECT metadata_event_time FROM canvasdata LIMIT 5")
 
-    canvasdata.collect().foreach(println)
+    canvasData.printSchema()
+
+    canvasdata.show()
+
+    
 
     // results.foreach(println)
     spark.stop()
