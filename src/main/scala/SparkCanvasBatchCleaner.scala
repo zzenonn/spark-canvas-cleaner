@@ -9,6 +9,7 @@ import org.apache.log4j._
 import org.apache.spark.SparkFiles._ 
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions.desc
+import org.apache.spark.sql.functions.unix_timestamp
 
 
 /** Run sample SQL operations on a dataset. */
