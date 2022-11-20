@@ -40,7 +40,7 @@ object SparkCanvasBatchCleaner {
 
     canvasdata.collect().foreach(println)
 
-    results.foreach(println)
+    // results.foreach(println)
     spark.stop()
   }
     
